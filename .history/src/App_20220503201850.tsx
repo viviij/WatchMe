@@ -20,13 +20,14 @@ interface GenreResponseProps {
 
 export function App() {
   const [selectedGenreId, setSelectedGenreId] = useState(1);
-  const [selectedGenre, setSelectedGenre] = useState<GenreResponseProps>({} as GenreResponseProps);
+
+  const [genres, setGenres] = useState<GenreResponseProps[]>([]);
+
   useEffect(() => {
-  
-    api.get<GenreResponseProps>(`genres/${selectedGenreId}`).then(response => {
-      setSelectedGenre(response.data);
-    })
-  }, [selectedGenreId]);
+    api.get<GenreResponseProps[]>('genres').then(response => {
+      setGenres(response.data);
+    });
+  }, []);
 
   function handleClickButton(id: number) {
     setSelectedGenreId(id);
@@ -34,8 +35,8 @@ export function App() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
-      <SideBar selectedGenreId={selectedGenreId} handleClickButton={handleClickButton}/>
-      <Content selectedGenre={selectedGenre} selectedGenreId={selectedGenreId}/>  
+      <SideBar selectedGenreId={selectedGenreId}/>
+      <Content />  
     </div>
   )
 }

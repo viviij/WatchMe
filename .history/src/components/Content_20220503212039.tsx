@@ -30,12 +30,14 @@ export function Content({selectedGenre, selectedGenreId}:ContentProps) {
   
   const [movies, setMovies] = useState<MovieProps[]>([]);
 
+  const [genres, setGenres] = useState<GenreResponseProps[]>([]);
+  
   useEffect(() => {
-    api.get<MovieProps[]>(`movies/?Genre_id=${selectedGenreId}`).then(response => {
-      setMovies(response.data);
+    api.get<GenreResponseProps[]>('genres').then(response => {
+      setGenres(response.data);
     });
-  }, [selectedGenreId]);
-
+  }, []);
+  
   return (
     <div className="container">
     <header>

@@ -15,6 +15,8 @@ interface MovieProps {
 
 
 
+const [movies, setMovies] = useState<MovieProps[]>([]);
+
 interface GenreResponseProps {
   id: number;
   name: 'action' | 'comedy' | 'documentary' | 'drama' | 'horror' | 'family';
@@ -22,20 +24,11 @@ interface GenreResponseProps {
 }
 
 interface ContentProps {
-  selectedGenreId: number;
+  handleClickButton: (id: number) => void;
   selectedGenre: GenreResponseProps;
 } 
 
-export function Content({selectedGenre, selectedGenreId}:ContentProps) {
-  
-  const [movies, setMovies] = useState<MovieProps[]>([]);
-
-  useEffect(() => {
-    api.get<MovieProps[]>(`movies/?Genre_id=${selectedGenreId}`).then(response => {
-      setMovies(response.data);
-    });
-  }, [selectedGenreId]);
-
+export function Content({selectedGenre, handleClickButton}:ContentProps) {
   return (
     <div className="container">
     <header>

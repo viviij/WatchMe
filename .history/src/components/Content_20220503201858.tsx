@@ -13,31 +13,26 @@ interface MovieProps {
   Runtime: string;
 }
 
-
-
 interface GenreResponseProps {
   id: number;
   name: 'action' | 'comedy' | 'documentary' | 'drama' | 'horror' | 'family';
   title: string;
 }
 
-interface ContentProps {
-  selectedGenreId: number;
-  selectedGenre: GenreResponseProps;
-} 
+const [movies, setMovies] = useState<MovieProps[]>([]);
 
-export function Content({selectedGenre, selectedGenreId}:ContentProps) {
-  
-  const [movies, setMovies] = useState<MovieProps[]>([]);
+useEffect(() => {
+  api.get<MovieProps[]>(`movies/?Genre_id=${selectedGenreId}`).then(response => {
+    setMovies(response.data);
+  });
 
-  useEffect(() => {
-    api.get<MovieProps[]>(`movies/?Genre_id=${selectedGenreId}`).then(response => {
-      setMovies(response.data);
-    });
-  }, [selectedGenreId]);
+  api.get<GenreResponseProps>(`genres/${selectedGenreId}`).then(response => {
+    setSelectedGenre(response.data);
+  })
+}, [selectedGenreId]);
 
-  return (
-    <div className="container">
+export function Content() {
+  <div className="container">
     <header>
       <span className="category">Categoria:<span> {selectedGenre.title}</span></span>
     </header>
@@ -50,5 +45,4 @@ export function Content({selectedGenre, selectedGenreId}:ContentProps) {
       </div>
     </main>
   </div>
-  )
 }
